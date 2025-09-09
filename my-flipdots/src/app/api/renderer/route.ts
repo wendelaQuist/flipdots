@@ -11,7 +11,7 @@ export async function GET() {
     ctx.fillRect(0, 0, width, height); //filling background color
 
     ctx.fillStyle = "white"; //create dot
-    ctx.fillRect(10, 1, 1, 1);
+    ctx.fillRect(10, 10, 5, 5);
 
     const buffer = canvas.toBuffer("image/png"); //convert canvas to image
 
