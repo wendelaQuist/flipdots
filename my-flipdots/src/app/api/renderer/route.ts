@@ -10,8 +10,12 @@ export async function GET() {
     ctx.fillStyle = "black";                
     ctx.fillRect(0, 0, width, height); //filling background color
 
-    ctx.fillStyle = "white"; //create dot
-    ctx.fillRect(10, 10, 5, 5);
+    const x = Math.floor(Math.random() * width);
+    const y = Math.floor(Math.random() * height);
+    ctx.fillStyle = "white";
+    ctx.beginPath();
+    ctx.arc(x + 0.5, y + 0.5, 0.5, 0, Math.PI * 2);
+    ctx.fill();
 
     const buffer = canvas.toBuffer("image/png"); //convert canvas to image
 

@@ -3,28 +3,19 @@
 import { useEffect, useState } from "react";
 
 export default function PreviewPage() {
-  const [imgUrl, setImgUrl] = useState<string | null>(null); //create empty storage to save image
+  const [imgSrc, setImgSrc] = useState("/api/renderer");
 
   useEffect(() => {
-    fetch("/api/renderer") //call API
-    .then((res) => res.blob()) //convert response into binary blob
-    .then((blob) => {
-      setImgUrl(URL.createObjectURL(blob)); //Convert blob into readable image
-    });
+    const interval = setInterval(() => {
+      setImgSrc(`/api/renderer?ts=${Date.now()}`); //add timestamp to prevent using cached image
+    }, 1000); //refresh every second
+
+    return () => clearInterval(interval);
   }, []);
 
   return(
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#14121A] text-[#F4DAE2]">
-      <h1 className="mb-4 text-xl">OWOW x Fontys Flip dots Project</h1>
-      {imgUrl ? (
-        <img 
-        src={imgUrl}
-        alt="Flipdots"
-        className="border border-[#F4DAE2]"
-        />
-      ) : (
-        <p>Loading...</p>
-      )}
+      <img src={imgSrc} alt="Flipdots preview" width={84} height={28}/>
     </div>
   )
 }
