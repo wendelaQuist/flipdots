@@ -8,6 +8,10 @@ import { WIDTH, HEIGHT, FPS} from "../../lib/settings"
         const canvas = createCanvas(WIDTH, HEIGHT); //creating canvas
         const ctx = canvas.getContext("2d");
 
+        const apiKey = process.env.OPENWEATHER_API_KEY;
+        const city = "Amsterdam";
+        const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`
+
         ctx.fillStyle = "black";                
         ctx.fillRect(0, 0, WIDTH, HEIGHT); //filling background color
 
@@ -22,3 +26,5 @@ import { WIDTH, HEIGHT, FPS} from "../../lib/settings"
         headers: {"Content-Type": "image/png"},
     });
     }
+
+
