@@ -1,19 +1,30 @@
 import { NextResponse } from "next/server";
 
-export async function GET() {
-    const apiKey = process.env.OPENWEATHER_API_KEY;
-    const city = "Amsterdam";
+export async function GET(request: Request) {
+    const apiKey = process.env.NEXT_PUBLIC_OPENWEATHER_KEY;
 
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+    if (!apiKey) {
+        console.error("Missing OpenWeather API key");
+        return NextResponse.json({ error: "API key missing"}, { status: 500});
+    }
+
+    const city = "Arnhem";
 
     try {
-        const res = await fetch(url);
-        if (!res.ok) {
-            return NextResponse.json({ error: "Failed to fetch weather"}, {status: res.status});
-        }
-        const data = await res.json();
-        return NextResponse.json(data);
-    } catch (err) {
-        return NextResponse.json({ error: "Something went horribly wrong"})
+        const res = await fetch(
+        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`
+    );
+
+    if (!res.ok) {
+        const error = await res.json();
+        console.error("OpenWeather error:", error);
+        return NextResponse.json({ error: error.message }, {status: res.status });
     }
+
+    const data = await res.json();
+    return NextResponse.json(data);
+} catch (err) {
+    console.error("Weather API fetch failed:", err);
+    return NextResponse.json({ error: "Failed to fetch weather" }, { status: 500});
+}
 }
