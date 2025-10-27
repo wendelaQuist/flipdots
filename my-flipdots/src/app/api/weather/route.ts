@@ -22,7 +22,13 @@ export async function GET(request: Request) {
     }
 
     const data = await res.json();
-    return NextResponse.json(data);
+    return NextResponse.json({
+        description: data.weather?.[0]?.description || "Unknown",
+        main: data.weather?.[0]?.main || "Unknown",
+        temperature: data.main?.temp || null,
+        humidity: data.main?.humidity || null,
+        city: data.name || city,
+    });
 } catch (err) {
     console.error("Weather API fetch failed:", err);
     return NextResponse.json({ error: "Failed to fetch weather" }, { status: 500});
